@@ -14,7 +14,7 @@ with urllib.request.urlopen("https://raw.githubusercontent.com/pcm-dpc/COVID-19/
     plt.ylabel('Cases')
     covid_data_italy['totale_casi'].plot(marker='o',color='darkred',label='cases')
     covid_data_italy['dimessi_guariti'].plot(marker='o',color='limegreen', label='cured')
-    covid_data_italy['totale_attualmente_positivi'].plot(marker='o',color='red',label='active cases')
+    covid_data_italy['totale_positivi'].plot(marker='o',color='red',label='active cases')
     covid_data_italy['deceduti'].plot(marker='o',color='black', label='deaths')
     plt.legend(loc="upper left")
     fig.canvas.set_window_title('Covid-19')
