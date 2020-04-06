@@ -15,11 +15,11 @@ def line_plot(data, data_name, plot_color):
     index=0
     if type(data) == list and type(plot_color)==list:
         for d in data:
-            d.plot(marker='o',color=plot_color[index],label=data_name[index])
+            d.plot(marker='o',color=plot_color[index],label=data_name[index],linewidth=2)
             index+=1
         plt.legend(loc="upper left")
     else:
-        data.plot(marker='o',color=plot_color)
+        data.plot(marker='o',color=plot_color, linewidth=2)
 
 def bar_plot(data, data_name, plot_color):
     #Create a bar plot with the provided data calculating the difference day by day
@@ -57,7 +57,7 @@ with urllib.request.urlopen("https://raw.githubusercontent.com/pcm-dpc/COVID-19/
                covid_data_italy['deceduti']
               ],
               ['intensive care patients','hospitalized patients','cured patients','deaths'],
-              ['red','salmon','limegreen','black']
+              ['red','pink','limegreen','black']
              )
     
     
@@ -68,25 +68,28 @@ with urllib.request.urlopen("https://raw.githubusercontent.com/pcm-dpc/COVID-19/
     fig.canvas.set_window_title('Covid-19')
     
     plots_data = [covid_data_italy['totale_casi'],
+                  covid_data_italy["totale_positivi"],
                   covid_data_italy['deceduti'],
                   covid_data_italy['tamponi'],
                   covid_data_italy['terapia_intensiva'],
                   covid_data_italy['ricoverati_con_sintomi'],
-                  covid_data_italy['dimessi_guariti'],
+                  covid_data_italy['dimessi_guariti']
                  ]
     plots_data_name = ['cases',
+                       'active cases',
                        'deaths',
                        'swabs',
                        'intensive care patients',
                        'hospitalized patients',
-                       'cured patients'
+                       'cured patients',
                       ]
     plots_data_color = ['darkred',
+                        'orangered',
                         'black',
                         'blue',
                         'red',
-                        'salmon',
-                        'limegreen'
+                        'pink',
+                        'limegreen',
                        ]
     i = 0
     subplots = 1
