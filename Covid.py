@@ -1,6 +1,8 @@
 import urllib.request, json 
 import pandas as pd
 import matplotlib.pyplot as plt
+import time
+from datetime import datetime
 
 import warnings
 import matplotlib.cbook
@@ -36,6 +38,11 @@ with urllib.request.urlopen("https://raw.githubusercontent.com/pcm-dpc/COVID-19/
     """ data = json.loads(url.read().decode()) """
     covid_data_italy = pd.read_json(url.read().decode())
     
+    now = datetime.now()
+    last_update = f'Last update: {now.strftime("%d/%m/%Y %H:%M:%S")}'
+    
+    start_time = time.time()
+    
     #Big line plot with cases, cured, active cases and deaths
     fig, ax = plt.subplots(figsize=(19, 10))
     fig.canvas.set_window_title('Covid-19')
@@ -48,6 +55,8 @@ with urllib.request.urlopen("https://raw.githubusercontent.com/pcm-dpc/COVID-19/
               ['cases','cured','active cases','deaths'],
               ['darkred','limegreen','orangered','black']
              )
+    plt.title(last_update)
+    plt.savefig('../covid_graphs/line_plot_1.png')
     
     #Big line plot with IE patients, hospitalized patients, cured patients and deaths
     fig, ax = plt.subplots(figsize=(19, 10))
@@ -59,7 +68,8 @@ with urllib.request.urlopen("https://raw.githubusercontent.com/pcm-dpc/COVID-19/
               ['intensive care patients','hospitalized patients','cured patients','deaths'],
               ['red','pink','limegreen','black']
              )
-    
+    plt.title(last_update)
+    plt.savefig('../covid_graphs/line_plot_2.png')
     
     #Small line+bar plots for all of the data above
     #Line plots use total number and bar plots use day by day difference between data
@@ -103,4 +113,9 @@ with urllib.request.urlopen("https://raw.githubusercontent.com/pcm-dpc/COVID-19/
         subplots+=2
     
     plt.subplots_adjust(hspace = .4)
+    plt.suptitle(last_update, fontsize=20)
+    plt.savefig('../covid_graphs/mini_plots.png')
     plt.show()
+    
+    print("--- %s seconds ---" % (time.time() - start_time))
+    
