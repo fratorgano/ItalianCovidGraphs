@@ -1,6 +1,6 @@
 # ItalianCovidGraphs
 Python program to make some plots with official italian covid data
-## You can see an updated (every day at 18:15 CEST) version of the graphs [here](https://covid.fratorgano.me) 
+## You can see an updated (every day at 18:30 CEST) version of the graphs [here](https://covid.fratorgano.me) 
 ## Features 
 * Creates graph with official covid italian ~~spaghetti~~ data. 
   1. Line plot with total cases, cured, active cases and deaths
