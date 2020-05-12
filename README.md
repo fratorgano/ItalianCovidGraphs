@@ -7,6 +7,11 @@ Python program to make some plots with official italian covid data
   2. Line plot with hospitalized patients, intensive care patients, cured patients and deaths
   3. Small line+bar plots. Line plots use total number and bar plots use day by day difference between data points. A pair of plots for all of the data types used above(+swabs).
 * Fully adjustable output(and output location) through config.ini file.
+* Checks if the downloaded data is updated before plotting. If it's not updated, waits 5 minutes and retries. 
+
+## What's new (12/05/2020)
+* The program now checks if the data was updated before graphing. If it wasn't, it waits 5 minutes and tries again.
+* Fixed a bug showing a label on y axis on some plots that shouldn't have been there. 
 
 ## What's new (03/05/2020)
 * The code is now more OOP friendly, thanks to the Sample class.
