@@ -39,17 +39,6 @@ def plot_style(ax):
     ax.xaxis.set_major_locator(mdates.WeekdayLocator(byweekday=0))
     #ax.xaxis.set_minor_locator(mdates.DayLocator())
 
-lastUpdate = f"{datetime.now().strftime('%d%m%Y%H%M%S')}"
-
-"""Creating json file with the last updated time"""
-if(images):
-    with open(f'{path}update.json','w+') as outfile:
-        data ={
-            'lastUpdate': lastUpdate,
-        }
-        json.dump(data,outfile)
-
-
 """Downloading data and decoding it into a pandas dataframe"""
 covid_data_italy = pd.read_json("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-covid19-ita-andamento-nazionale.json")
 if(logging):
@@ -64,6 +53,16 @@ while(covid_data_italy['data'][len(covid_data_italy['data'])-1][:10]!=datetime.n
     covid_data_italy = pd.read_json("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-covid19-ita-andamento-nazionale.json")
     if(logging):
         print(f"[{datetime.now().strftime('%d/%m/%Y %H:%M:%S')}] Downloaded json data")
+
+lastUpdate = f"{datetime.now().strftime('%d%m%Y%H%M%S')}"
+
+"""Creating json file with the last updated time"""
+if(images):
+    with open(f'{path}update.json','w+') as outfile:
+        data ={
+            'lastUpdate': lastUpdate,
+        }
+        json.dump(data,outfile)
 
 """Delete old plots"""
 if(images):
