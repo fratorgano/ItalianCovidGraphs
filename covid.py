@@ -39,7 +39,6 @@ def plot_style(ax):
     ax.xaxis.set_major_locator(mdates.WeekdayLocator(byweekday=0))
     #ax.xaxis.set_minor_locator(mdates.DayLocator())
 
-
 """Downloading data and decoding it into a pandas dataframe"""
 covid_data_italy = pd.read_json("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-covid19-ita-andamento-nazionale.json")
 if(logging):
@@ -64,7 +63,6 @@ if(images):
             'lastUpdate': lastUpdate,
         }
         json.dump(data,outfile)
-
 
 """Delete old plots"""
 if(images):
