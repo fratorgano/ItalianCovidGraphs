@@ -6,9 +6,14 @@ Python program to make some plots with official italian and european covid data
   1. Line plot with total cases, cured, active cases, stay at home people and deaths
   2. Line plot with hospitalized patients, intensive care patients, cured patients and deaths
   3. Small line+bar plots. Line plots use total number and bar plots use day by day difference between data points. A pair of plots for all of the data types used above(+swabs).
+  4. Plot with the percentage of daily positive swabs out ot all the swabs done that day
 * Creates bar plot with top 20 european(continent) countries by number of new cases using official european data.
 * Fully adjustable output(and its location) through config.ini file.
 * Checks if the downloaded data is updated before plotting. If it's not updated, waits 5 minutes and retries. 
+
+## What's new (19/10/2020)
+* Added a new plot with the percentage of daily positive swabs out ot all the swabs done that day
+* Some bug fixing
 
 ## What's new (18/09/2020)
 * Added a new plot with the top 20 european(continent) countries by number of new cases. 

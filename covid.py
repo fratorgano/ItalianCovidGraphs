@@ -18,7 +18,7 @@ from sample import Sample
 
 """ Loading configs """
 config = ConfigParser()
-config.read('covid-config.ini')
+config.read('/home/fra/python/ItalianCovidGraphs/covid-config.ini')
 if(len(config)==1):
     raise Exception("Could not find config file")
 images = True if config['Output-images-to-File']['enabled'] == 'True' else False
@@ -39,16 +39,6 @@ def plot_style(ax):
     ax.xaxis.set_major_locator(mdates.WeekdayLocator(byweekday=0))
     #ax.xaxis.set_minor_locator(mdates.DayLocator())
 
-lastUpdate = f"{datetime.now().strftime('%d%m%Y%H%M%S')}"
-
-"""Creating json file with the last updated time"""
-if(images):
-    with open(f'{path}update.json','w+') as outfile:
-        data ={
-            'lastUpdate': lastUpdate,
-        }
-        json.dump(data,outfile)
-
 
 """Downloading data and decoding it into a pandas dataframe"""
 covid_data_italy = pd.read_json("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-covid19-ita-andamento-nazionale.json")
@@ -64,6 +54,17 @@ while(covid_data_italy['data'][len(covid_data_italy['data'])-1][:10]!=datetime.n
     covid_data_italy = pd.read_json("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-covid19-ita-andamento-nazionale.json")
     if(logging):
         print(f"[{datetime.now().strftime('%d/%m/%Y %H:%M:%S')}] Downloaded json data")
+
+lastUpdate = f"{datetime.now().strftime('%d%m%Y%H%M%S')}"
+
+"""Creating json file with the last updated time"""
+if(images):
+    with open(f'{path}update.json','w+') as outfile:
+        data ={
+            'lastUpdate': lastUpdate,
+        }
+        json.dump(data,outfile)
+
 
 """Delete old plots"""
 if(images):
@@ -207,6 +208,31 @@ if(images):
     plt.savefig(f'{path}mini_plots_{lastUpdate}.png', transparent=True)
     if(logging):
         print(f"[{datetime.now().strftime('%d/%m/%Y %H:%M:%S')}] Created mini_plots")
+
+if(screen):
+    plt.show()
+
+"""Plot that calculates the percentage of positive swabs out of on a daily basis """
+fig, ax = plt.subplots(figsize=(19, 10))
+""" plt.box(False)
+plt.grid(True)
+plt.xticks(rotation=45, horizontalalignment='right') """
+
+plot_style(ax)
+
+plt.title(f'Percentage of total cases variation / swabs variation (Today: {total_cases.daily_variation[-1]} / {swabs.daily_variation[-1]} * 100 = {round(total_cases.daily_variation[-1]/swabs.daily_variation[-1]*100,2)}%)')
+
+#ax = europe_data.plot.bar(x='countriesAndTerritories', y='cases')
+#ax.scatter(swabs.daily_variation[-60:],total_cases.daily_variation[-60:])
+#print(swabs.daily_variation)
+plt.bar(total_cases.dates[1:], [x/y*100 for x,y in zip(total_cases.daily_variation[1:],swabs.daily_variation[1:])], color=active_cases.color, align='edge', zorder=2, width=1)
+
+fig.tight_layout()
+
+if(images):
+    plt.savefig(f'{path}cases_swabs{lastUpdate}.png', transparent=True)
+    if(logging):
+        print(f"[{datetime.now().strftime('%d/%m/%Y %H:%M:%S')}] Created cases_swabs")
 
 if(screen):
     plt.show()
