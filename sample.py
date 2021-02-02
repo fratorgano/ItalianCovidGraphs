@@ -2,11 +2,12 @@
 from datetime import datetime
 
 import matplotlib.pyplot as plt
+from numpy import fix
 import pandas as pd
 
 class Sample:
 
-    def __init__(self, data, starting_date, name='data', color='black'):
+    def __init__(self, data, starting_date, name='data', color='black', fix_zero=False):
         self.data = data
         self.name = name
         self.color = color
@@ -14,8 +15,13 @@ class Sample:
         self.dates = pd.date_range(start=starting_date, periods=len(self.data))
         self.daily_variation = list()
         self.daily_variation.append(0)
+        
         for index, d in enumerate(self.data[1:]):
-            self.daily_variation.append(d-self.data[index])
+            if(fix_zero):
+                self.daily_variation.append(d-self.data[index] if d-self.data[index]>0 else 0)
+            else:
+                self.daily_variation.append(d-self.data[index])
+        
     
     def line_plot(self, linewidth=2, linestyle='-', marker='o', title=False):
         if(title):
