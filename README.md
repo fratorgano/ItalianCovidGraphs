@@ -1,5 +1,5 @@
 # ItalianCovidGraphs
-Python program to make some plots with official italian and european covid data
+Python program to make some plots with official italian covid and vaccine data
 ## You can see an updated version of the graphs [here](https://covid.fratorgano.me) 
 ## Features 
 * Creates graph with official covid italian ~~spaghetti~~ data. 
