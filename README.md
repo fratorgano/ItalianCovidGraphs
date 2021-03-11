@@ -3,8 +3,8 @@ Python program to make some plots with official italian covid and vaccine data
 ## You can see an updated version of the graphs [here](https://covid.fratorgano.me) 
 ## Features 
 * Creates graph with official covid italian ~~spaghetti~~ data. 
-  1. Line plot with total cases, cured, active cases, stay at home people, deaths, first vaccine doses and seconda vaccine doses.
-  2. Line plot with hospitalized patients, intensive care patients, cured patients and deaths.
+  1. Line plot with total cases, cured, active cases, stay at home people and deaths.
+  2. Line plot with hospitalized patients and  intensive care patients.
   3. Small line+bar plots. Line plots use total number and bar plots use day by day difference between data points. A pair of plots for all of the data types used above(+swabs).
   4. Plot with the percentage of daily positive swabs out ot all the swabs done that day.
   5. Line plot with first vaccine doses and seconda vaccine doses only.
@@ -13,7 +13,7 @@ Python program to make some plots with official italian covid and vaccine data
   8. Percentage of used vaccines out of distributed ones per region.
   9. Pie chart with vaccines suppliers.
 * Fully adjustable output(and its location) through config.ini file.
-* Checks if the downloaded data is updated before plotting. If it's not updated, waits 5 minutes and retries. 
+* Checks if the downloaded data is updated before plotting. If it's not updated, waits 5 minutes and retries.
 
 ## What's new (02/02/2021)
 * Added new plots with vaccines data
@@ -49,8 +49,10 @@ Python program to make some plots with official italian covid and vaccine data
 
 ## Data
 All data used is taken from [Presidenza del Consiglio dei Ministri/COVID-19](https://github.com/pcm-dpc/COVID-19) and [Italia/covid19-opendata-vaccini](https://github.com/italia/covid19-opendata-vaccini)
+
 ## 3rd party libraries used
 * [Matplotlib](https://github.com/matplotlib/matplotlib)
 * [Pandas](https://github.com/pandas-dev/pandas)
+* [Numpy] (https://github.com/numpy/numpy)
 * [Requests](https://github.com/psf/requests)
 

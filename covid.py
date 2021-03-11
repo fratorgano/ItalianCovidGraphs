@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 from configparser import ConfigParser
 
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
@@ -20,7 +21,7 @@ import requests
 
 """ Loading configs """
 config = ConfigParser()
-config.read("covid-config.ini")
+config.read("/home/fra/python/ItalianCovidGraphs/covid-config.ini")
 if(len(config)==1):
     raise Exception("Could not find config file")
 images = True if config['Output-images-to-File']['enabled'] == 'True' else False
@@ -90,7 +91,7 @@ if(vaccine):
 
 
 """Checks if data is updated, if it's not, wait five minutes and tries again, otherwise keeps going"""
-while(covid_data_italy['data'][len(covid_data_italy['data'])-1][:10]!=datetime.now().strftime("%Y-%m-%d")):
+while(True and covid_data_italy['data'][len(covid_data_italy['data'])-1][:10]!=datetime.now().strftime("%Y-%m-%d")):
     if(logging):
         print(f"[{datetime.now().strftime('%d/%m/%Y %H:%M:%S')}] Data is outdated({covid_data_italy['data'][len(covid_data_italy['data'])-1][:10]}), waiting 5 minutes and retrying ")
     time.sleep(60*5)
@@ -154,9 +155,10 @@ active_cases.line_plot()
 recovered.line_plot()
 deaths.line_plot()
 home_isolation.line_plot()
-if vaccine:
-    prima_dose.line_plot()
-    seconda_dose.line_plot()
+#Removed cause it was flattening the plot
+#if vaccine:
+#    prima_dose.line_plot()
+#    seconda_dose.line_plot()
 
 plt.legend(loc="upper left")
 fig.tight_layout()
@@ -176,7 +178,8 @@ plot_style(ax)
 
 intensive_care.line_plot()
 hospitalized.line_plot()
-deaths.line_plot()
+#Removed cause it was flattening the plot
+#deaths.line_plot()
 
 plt.legend(loc="upper left")
 fig.tight_layout()
@@ -356,6 +359,7 @@ if(vaccine):
     p2 = plt.barh(cum_regioni.index,[x/y*100 for x,y in zip(cum_regioni['seconda_dose'],cum_regioni['pop'])], height=0.4, color=seconda_dose.color)
 
     plt.xlim([-1,101])
+    ax.set_xticks(np.arange(0, 105, 5)) 
     plt.legend((p1[0], p2[0]), (prima_dose.name , seconda_dose.name))
     plt.box(False)
     plt.grid(True)
@@ -382,6 +386,7 @@ if(vaccine):
     p2 = plt.bar(cum_regioni.index,distrib_percentages_second_dose, width=0.8, color=seconda_dose.color, bottom=distrib_percentages_first_dose)
 
     plt.legend((p1[0], p2[0]), (prima_dose.name , seconda_dose.name))
+    ax.set_yticks(np.arange(0, max([x+y for x,y in zip(distrib_percentages_first_dose,distrib_percentages_second_dose)])+5, 5)) 
     plt.box(False)
     plt.grid(True)
     plt.xticks(rotation=45)
