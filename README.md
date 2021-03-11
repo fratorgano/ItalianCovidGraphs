@@ -53,6 +53,6 @@ All data used is taken from [Presidenza del Consiglio dei Ministri/COVID-19](htt
 ## 3rd party libraries used
 * [Matplotlib](https://github.com/matplotlib/matplotlib)
 * [Pandas](https://github.com/pandas-dev/pandas)
-* [Numpy] (https://github.com/numpy/numpy)
+* [Numpy](https://github.com/numpy/numpy)
 * [Requests](https://github.com/psf/requests)
 
