@@ -293,6 +293,8 @@ plt.title(f'Percentage of total cases variation / swabs variation (Today: {total
 percentages = [0 if x<=0 or y<=0 else x/y*100 for x,y in zip(total_cases.daily_variation[1:],swabs.daily_variation[1:])]
 plt.bar(total_cases.dates[1:], percentages, color=active_cases.color, align='edge', zorder=2, width=1)
 
+ax.set_yticks(np.arange(0,max(percentages),5))
+
 fig.tight_layout()
 
 if(images):
@@ -360,7 +362,7 @@ if(vaccine):
 
     plt.xlim([-1,101])
     ax.set_xticks(np.arange(0, 105, 5)) 
-    plt.legend((p1[0], p2[0]), (prima_dose.name , seconda_dose.name))
+    plt.legend((p1[0], p2[0]), (prima_dose.name+" percentage" , seconda_dose.name+" percentage"))
     plt.box(False)
     plt.grid(True)
     ax.set_axisbelow(True)
@@ -385,7 +387,7 @@ if(vaccine):
     p1 = plt.bar(cum_regioni.index,distrib_percentages_first_dose, width=0.8, color=prima_dose.color)
     p2 = plt.bar(cum_regioni.index,distrib_percentages_second_dose, width=0.8, color=seconda_dose.color, bottom=distrib_percentages_first_dose)
 
-    plt.legend((p1[0], p2[0]), (prima_dose.name , seconda_dose.name))
+    plt.legend((p1[0], p2[0]), (prima_dose.name+" percentage" , seconda_dose.name+" percentage"))
     ax.set_yticks(np.arange(0, max([x+y for x,y in zip(distrib_percentages_first_dose,distrib_percentages_second_dose)])+5, 5)) 
     plt.box(False)
     plt.grid(True)
