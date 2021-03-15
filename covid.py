@@ -6,12 +6,15 @@ from configparser import ConfigParser
 
 import pandas as pd
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
 from sample import Sample
 
 import requests
+
+matplotlib.use('Agg')
 
 
 """ Disabling some useless warnings, they are not showing up anymore even when commented, leaving them for future reference """
@@ -196,7 +199,7 @@ mini_plots = True
 if(mini_plots):
     """Creating small line+bar plots for all of the data above"""
     fig, ax = plt.subplots(figsize=(19, 50 if vaccine else 40))
-    fig.canvas.set_window_title('Covid-19')
+    #fig.canvas.set_window_title('Covid-19')
     rows = 10 if vaccine else 8
 
     ax = plt.subplot(rows,2,1)
@@ -306,6 +309,25 @@ if(screen):
     plt.show()
 
 
+fig, ax = plt.subplots(figsize=(19, 10))
+plot_style(ax)
+
+total_cases.line_plot()
+if vaccine:
+    prima_dose.line_plot()
+    seconda_dose.line_plot()
+
+plt.legend(loc="upper left")
+fig.tight_layout()
+
+if(images):
+    plt.savefig(f'{path}azzculo{lastUpdate}.png', transparent=True)
+    if(logging):
+        print(f"[{datetime.now().strftime('%d/%m/%Y %H:%M:%S')}] Created azz")
+
+if(screen):
+    plt.show()
+
 
 if(vaccine):
     """line plot that shows first and second dose data """
@@ -411,7 +433,9 @@ if(vaccine):
     distrib_percentages_fornitori = [x/cum_fornitori['numero_dosi'].sum()*100 for x in cum_fornitori['numero_dosi']]
     labels = cum_fornitori.index.values.tolist();
 
-    plt.pie(distrib_percentages_fornitori, labels=labels, autopct='%1.1f%%', startangle=90, shadow=True)
+    colors = ['#efab00','#e51937','#0093fc'];
+
+    plt.pie(distrib_percentages_fornitori, labels=labels, autopct='%1.1f%%', startangle=90,colors=colors)
     plt.box(False)
     ax.set_axisbelow(True)
     

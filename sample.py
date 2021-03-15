@@ -21,16 +21,22 @@ class Sample:
                 self.daily_variation.append(d-self.data[index] if d-self.data[index]>0 else 0)
             else:
                 self.daily_variation.append(d-self.data[index])
+        self.percentage_variation_total = 100*((self.data.iloc[-1]-self.data.iloc[-2])/(self.data.iloc[-2]))
+        self.percentage_variation_variation = 100*((self.daily_variation[-1]-self.daily_variation[-2])/(self.daily_variation[-2]))
+        #self.rolling_avg_14days_variation =  pd.DataFrame({'data':self.daily_variation}).rolling(14).mean()
+        #print(self.rolling_avg_14days_variation)
+
         
     
     def line_plot(self, linewidth=2, linestyle='-', marker='o', title=False):
         if(title):
-                percentage_variation = 100*((self.data.iloc[-1]-self.data.iloc[-2])/(self.data.iloc[-1]+self.data.iloc[-2])/2)
-                plt.title(f'Number of {self.name} (Total: {self.data.iloc[-1]}, {percentage_variation:+.2f}%)')
+                plt.title(f'Number of {self.name} (Total: {self.data.iloc[-1]}, {self.percentage_variation_total:+.2f}%)')
         plt.plot_date(self.dates, self.data, color=self.color, label=self.name, linewidth=linewidth, linestyle=linestyle, marker=marker)
+        
     
-    def variation_bar_plot(self, title=False):
+    def variation_bar_plot(self, title=False, linewidth=1, linestyle='-'):
         plt.bar(self.dates, self.daily_variation, color=self.color, align='edge', zorder=2, width=1)
-        percentage_variation = 100*((self.daily_variation[-1]-self.daily_variation[-2])/(self.daily_variation[-1]+self.daily_variation[-2])/2)
+        #plt.plot_date(self.dates, self.rolling_avg_14days_variation,color='black', linewidth=linewidth, linestyle=linestyle, marker='')
+        
         if(title):
-            plt.title(f'Daily {self.name} variation (Today: {self.daily_variation[-1]}, {percentage_variation:+.2f}%)')
+            plt.title(f'Daily {self.name} variation (Today: {self.daily_variation[-1]}, {self.percentage_variation_variation:+.2f}%)')
