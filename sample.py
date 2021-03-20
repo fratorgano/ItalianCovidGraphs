@@ -21,8 +21,8 @@ class Sample:
                 self.daily_variation.append(d-self.data[index] if d-self.data[index]>0 else 0)
             else:
                 self.daily_variation.append(d-self.data[index])
-        self.percentage_variation_total = 100*((self.data.iloc[-1]-self.data.iloc[-2])/(self.data.iloc[-2]))
-        self.percentage_variation_variation = 100*((self.daily_variation[-1]-self.daily_variation[-2])/(self.daily_variation[-2]))
+        self.percentage_variation_total = 100*((self.data.iloc[-1]-self.data.iloc[-2])/abs(self.data.iloc[-2]))
+        self.percentage_variation_variation = 100*((self.daily_variation[-1]-self.daily_variation[-2])/abs(self.daily_variation[-2]))
         #self.rolling_avg_14days_variation =  pd.DataFrame({'data':self.daily_variation}).rolling(14).mean()
         #print(self.rolling_avg_14days_variation)
 
