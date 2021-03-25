@@ -354,6 +354,8 @@ if(vaccine):
     """bar plot that shows first and second dose data per region """
     fig, ax = plt.subplots(figsize=(19, 10))
 
+    cum_regioni = cum_regioni.sort_values(by=['prima_dose'], ascending=False)
+
     p1 = plt.bar(cum_regioni.index,cum_regioni['prima_dose'], width=0.8, color=prima_dose.color)
     p2 = plt.bar(cum_regioni.index,cum_regioni['seconda_dose'], width=0.4, color=seconda_dose.color)
     plt.legend((p1[0], p2[0]), (prima_dose.name , seconda_dose.name))
@@ -378,9 +380,11 @@ if(vaccine):
     fig, ax = plt.subplots(figsize=(19, 10))
     #cum_regioni.sort_index(ascending=False)
     #print(cum_regioni.index)
+    df_1 = pd.DataFrame({'regions':cum_regioni.index,'percentage1':[x/y*100 for x,y in zip(cum_regioni['prima_dose'],cum_regioni['pop'])],'percentage2':[x/y*100 for x,y in zip(cum_regioni['seconda_dose'],cum_regioni['pop'])]})
+    df_1 = df_1.sort_values(by=['percentage1'])
 
-    p1 = plt.barh(cum_regioni.index,[x/y*100 for x,y in zip(cum_regioni['prima_dose'],cum_regioni['pop'])], height=0.8, color=prima_dose.color)
-    p2 = plt.barh(cum_regioni.index,[x/y*100 for x,y in zip(cum_regioni['seconda_dose'],cum_regioni['pop'])], height=0.4, color=seconda_dose.color)
+    p1 = plt.barh(df_1.regions,df_1.percentage1, height=0.8, color=prima_dose.color)
+    p2 = plt.barh(df_1.regions,df_1.percentage2, height=0.4, color=seconda_dose.color)
 
     plt.xlim([-1,101])
     ax.set_xticks(np.arange(0, 105, 5)) 
@@ -405,9 +409,14 @@ if(vaccine):
 
     distrib_percentages_first_dose = [x/y*100 for x,y in zip(cum_regioni['prima_dose'],cum_regioni['n_dosi'])]
     distrib_percentages_second_dose = [x/y*100 for x,y in zip(cum_regioni['seconda_dose'],cum_regioni['n_dosi'])]
+    distrib_percentages_sum = [x+y for x,y in zip(distrib_percentages_first_dose,distrib_percentages_second_dose)]
 
-    p1 = plt.bar(cum_regioni.index,distrib_percentages_first_dose, width=0.8, color=prima_dose.color)
-    p2 = plt.bar(cum_regioni.index,distrib_percentages_second_dose, width=0.8, color=seconda_dose.color, bottom=distrib_percentages_first_dose)
+    df_2 = pd.DataFrame({'regions':cum_regioni.index,'percentage1':distrib_percentages_first_dose,'percentage2':distrib_percentages_second_dose,'cum_percentages':distrib_percentages_sum})
+
+    df_2 = df_2.sort_values(by=['cum_percentages'], ascending=False)
+
+    p1 = plt.bar(df_2.regions,df_2.percentage1, width=0.8, color=prima_dose.color)
+    p2 = plt.bar(df_2.regions,df_2.percentage2, width=0.8, color=seconda_dose.color, bottom=df_2.percentage1)
 
     plt.legend((p1[0], p2[0]), (prima_dose.name+" percentage" , seconda_dose.name+" percentage"))
     ax.set_yticks(np.arange(0, max([x+y for x,y in zip(distrib_percentages_first_dose,distrib_percentages_second_dose)])+5, 5)) 
@@ -431,9 +440,9 @@ if(vaccine):
     """Pie plot that shows italy vaccines suppliers and their percentages"""
     fig, ax = plt.subplots(figsize=(19, 10))
     distrib_percentages_fornitori = [x/cum_fornitori['numero_dosi'].sum()*100 for x in cum_fornitori['numero_dosi']]
-    labels = cum_fornitori.index.values.tolist();
+    labels = cum_fornitori.index.values.tolist()
 
-    colors = ['#efab00','#e51937','#0093fc'];
+    colors = ['#efab00','#e51937','#0093fc']
 
     plt.pie(distrib_percentages_fornitori, labels=labels, autopct='%1.1f%%', startangle=90,colors=colors)
     plt.box(False)
