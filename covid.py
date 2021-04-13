@@ -16,6 +16,7 @@ import requests
 
 matplotlib.use('Agg')
 
+Debug = False
 
 """ Disabling some useless warnings, they are not showing up anymore even when commented, leaving them for future reference """
 #import warnings
@@ -89,12 +90,17 @@ if(vaccine):
                           125501, 4907704]
 
     cum_fornitori = pd.DataFrame(distribution_data.groupby(['fornitore'])['numero_dosi'].sum())
+    cum_fornitori['colore'] = ['#00a0df','#e51937','#3c9673','#efab00']
+    l = cum_fornitori.index.tolist()
+    idx = l.index('Janssen')
+    l[idx] = 'J&J'
+    cum_fornitori.index = l
 
     starting_date_vaccine = vaccine_data['data_somministrazione'][0][:10]
 
 
 """Checks if data is updated, if it's not, wait five minutes and tries again, otherwise keeps going"""
-while(True and covid_data_italy['data'][len(covid_data_italy['data'])-1][:10]!=datetime.now().strftime("%Y-%m-%d")):
+while(not Debug and covid_data_italy['data'][len(covid_data_italy['data'])-1][:10]!=datetime.now().strftime("%Y-%m-%d")):
     if(logging):
         print(f"[{datetime.now().strftime('%d/%m/%Y %H:%M:%S')}] Data is outdated({covid_data_italy['data'][len(covid_data_italy['data'])-1][:10]}), waiting 5 minutes and retrying ")
     time.sleep(60*5)
@@ -439,12 +445,12 @@ if(vaccine):
 
     """Pie plot that shows italy vaccines suppliers and their percentages"""
     fig, ax = plt.subplots(figsize=(19, 10))
-    distrib_percentages_fornitori = [x/cum_fornitori['numero_dosi'].sum()*100 for x in cum_fornitori['numero_dosi']]
+    cum_fornitori['percentuale'] = [x/cum_fornitori['numero_dosi'].sum()*100 for x in cum_fornitori['numero_dosi']]
+    cum_fornitori = cum_fornitori.sort_values(by=['percentuale'])
     labels = cum_fornitori.index.values.tolist()
+    colors = cum_fornitori['colore'].tolist()
 
-    colors = ['#efab00','#e51937','#0093fc']
-
-    plt.pie(distrib_percentages_fornitori, labels=labels, autopct='%1.1f%%', startangle=90,colors=colors)
+    plt.pie(cum_fornitori['percentuale'], labels=labels, autopct='%1.1f%%', startangle=90,colors=colors)
     plt.box(False)
     ax.set_axisbelow(True)
     
